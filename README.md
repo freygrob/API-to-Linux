@@ -2,10 +2,12 @@
 
 ## Installation
 
+```
 pip install flask
 pip install shellfuncs
 
 ./server.py
+```
 
 ## API
 
