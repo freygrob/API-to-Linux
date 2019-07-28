@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-import shellfuncs
-from wrapper import hello, job_create, job_status, job_output, job_remove
+import subprocess
+def exec(command):
+    return subprocess.run(command, capture_output=True)
 
 from flask import Flask
 
@@ -9,33 +10,28 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    returncode, stdout, stderr = hello()
-    return stdout
+    return exec('api-to-shell/hello.sh').stdout
 
 @app.route('/job/<scriptname>', methods=['GET','POST'])
-def create(scriptname):
-    returncode, stdout, stderr = job_create(scriptname)
-    return stdout
+def job_create(scriptname):
+    return exec(['./wrapper.sh', 'job_create', scriptname]).stdout
 
 @app.route('/job/<id>/status')
-def status(id):
-    returncode, stdout, stderr = job_status(id)
-    return stdout
+def job_status(id):
+    return exec(['./wrapper.sh', 'job_status', id]).stdout
 
 @app.route('/job/<id>/output')
 @app.route('/job/<id>/output/<start>')
 @app.route('/job/<id>/output/<start>/<end>')
-def output(id, start=1, end=0):
-    returncode, stdout, stderr = job_output(id, start, end)
-    return stdout
+def job_output(id, start=1, end=0):
+    return exec(['./wrapper.sh', 'job_output', id, str(start), str(end)]).stdout
 
 @app.route('/job/<id>/output/last')
-def output_last(id):
-    return output(id, 0, 0)
+def job_output_last(id):
+    return job_output(id, 0, 0)
 
 @app.route('/job/<id>/remove')
-def remove(id):
-    returncode, stdout, stderr = job_remove(id)
-    return stdout
+def job_remove(id):
+    return exec(['./wrapper.sh', 'job_remove', id]).stdout
 
 app.run(host='0.0.0.0')
