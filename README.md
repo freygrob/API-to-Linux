@@ -1,4 +1,4 @@
-# API-to-Linux
+# API-to-Shell
 
 ## Installation
 
@@ -10,7 +10,6 @@ yum install screen
 
 ```
 pip install flask
-pip install shellfuncs
 
 ./server.py
 ```
