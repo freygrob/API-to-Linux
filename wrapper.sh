@@ -1,4 +1,13 @@
 #!/bin/bash
+# wrapper.sh funcname
+#   job_create scriptname
+#   job_status id
+#   job_output id start end
+#   job_remove id
+
+funcname=$1
+shift
+
 #tmux=$(which tmux)
 [ -z "$tmux" ] && screen=$(which screen)
 
@@ -89,3 +98,7 @@ job_remove() {
   rm -f /var/tmp/${id}.*
   echo $retcode
 }
+
+if [ -n "$funcname" ]; then
+  $funcname $*
+fi
