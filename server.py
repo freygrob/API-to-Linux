@@ -39,6 +39,7 @@ def job_output_last(id):
     return job_output(id, 0, 0)
 
 @app.route('/job/<id>/remove')
+@app.route('/job/<id>', methods=['DELETE'])
 def job_remove(id):
     return json(exec(['./wrapper.sh', 'job_remove', id]))
 
